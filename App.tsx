@@ -170,28 +170,6 @@ function AppContent() {
               }}
             />
             <Tab.Screen
-              name="Add"
-              component={AddExpense}
-              options={{
-                tabBarLabel: t('nav.add'),
-                tabBarIcon: ({ color, focused }) => (
-                  <Icon
-                    name={focused ? 'add-circle' : 'add-circle-outline'}
-                    size={focused ? 28 : 26}
-                    color={color}
-                  />
-                ),
-              }}
-              listeners={({ navigation }) => ({
-                tabPress: (e) => {
-                  e.preventDefault();
-                  navigation.navigate('Expenses', {
-                    screen: 'AddExpense',
-                  });
-                },
-              })}
-            />
-            <Tab.Screen
               name="Reports"
               component={Reports}
               options={{

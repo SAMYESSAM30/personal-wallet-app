@@ -1,12 +1,9 @@
 PODS:
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
-  - EXConstants (18.0.10):
-    - ExpoModulesCore
   - Expo (54.0.25):
     - boost
     - DoubleConversion
-    - ExpoModulesCore
     - fast_float
     - fmt
     - glog
@@ -29,43 +26,6 @@ PODS:
     - React-rendererdebug
     - React-utils
     - ReactAppDependencyProvider
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - SocketRocket
-    - Yoga
-  - ExpoAsset (12.0.10):
-    - ExpoModulesCore
-  - ExpoFileSystem (19.0.19):
-    - ExpoModulesCore
-  - ExpoFont (14.0.9):
-    - ExpoModulesCore
-  - ExpoKeepAwake (15.0.7):
-    - ExpoModulesCore
-  - ExpoModulesCore (3.0.26):
-    - boost
-    - DoubleConversion
-    - fast_float
-    - fmt
-    - glog
-    - hermes-engine
-    - RCT-Folly
-    - RCT-Folly/Fabric
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-jsi
-    - React-jsinspector
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
@@ -2595,7 +2555,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNSVG (15.12.1):
+  - RNSVG (13.14.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2621,10 +2581,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNSVG/common (= 15.12.1)
+    - RNSVG/common (= 13.14.0)
     - SocketRocket
     - Yoga
-  - RNSVG/common (15.12.1):
+  - RNSVG/common (13.14.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2686,13 +2646,7 @@ PODS:
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - EXConstants (from `../node_modules/expo-constants/ios`)
   - Expo (from `../node_modules/expo`)
-  - ExpoAsset (from `../node_modules/expo-asset/ios`)
-  - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
-  - ExpoFont (from `../node_modules/expo-font/ios`)
-  - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
-  - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
@@ -2783,20 +2737,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
-  EXConstants:
-    :path: "../node_modules/expo-constants/ios"
   Expo:
     :path: "../node_modules/expo"
-  ExpoAsset:
-    :path: "../node_modules/expo-asset/ios"
-  ExpoFileSystem:
-    :path: "../node_modules/expo-file-system/ios"
-  ExpoFont:
-    :path: "../node_modules/expo-font/ios"
-  ExpoKeepAwake:
-    :path: "../node_modules/expo-keep-awake/ios"
-  ExpoModulesCore:
-    :path: "../node_modules/expo-modules-core"
   fast_float:
     :podspec: "../node_modules/react-native/third-party-podspecs/fast_float.podspec"
   FBLazyVector:
@@ -2958,13 +2900,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
-  EXConstants: fd688cef4e401dcf798a021cfb5d87c890c30ba3
-  Expo: 22c06b7185706d92688f6e943576198540836bc1
-  ExpoAsset: d839c8eae8124470332408427327e8f88beb2dfd
-  ExpoFileSystem: 77157a101e03150a4ea4f854b4dd44883c93ae0a
-  ExpoFont: cf9d90ec1d3b97c4f513211905724c8171f82961
-  ExpoKeepAwake: 1a2e820692e933c94a565ec3fbbe38ac31658ffe
-  ExpoModulesCore: 49cf144abe073aa03aaba997ff1b9c9763d54845
+  Expo: 9cf338f83f91099a080b09c079f0b1a103a60cfc
   fast_float: b32c788ed9c6a8c584d114d0047beda9664e7cc6
   FBLazyVector: 0aa6183b9afe3c31fc65b5d1eeef1f3c19b63bfa
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
@@ -3040,11 +2976,11 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 29f0230e1a25f36c20b05f65e2eb8958d6526e82
   RNGestureHandler: f1dd7f92a0faa2868a919ab53bb9d66eb4ebfcf5
   RNScreens: 0bbf16c074ae6bb1058a7bf2d1ae017f4306797c
-  RNSVG: 287504b73fa0e90a605225aa9f852a86d5461e84
+  RNSVG: c1737c828cc2090c13de45c604efa8107148b601
   RNVectorIcons: 791f13226ec4a3fd13062eda9e892159f0981fae
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 689c8e04277f3ad631e60fe2a08e41d411daf8eb
 
-PODFILE CHECKSUM: 690b7fc2db577bb8f12bbfdd651e10b64d082d1f
+PODFILE CHECKSUM: 2c8ac0c1911466f16494a09a86cb82d47f2a21c3
 
 COCOAPODS: 1.16.2

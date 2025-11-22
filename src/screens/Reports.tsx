@@ -412,27 +412,29 @@ export default function Reports() {
             <Text style={dynamicStyles.sectionTitle}>
               {language === 'ar' ? 'الترند اليومي' : 'Daily Trend'}
             </Text>
-            <LineChart
-              data={lineChartData}
-              width={screenWidth - 80}
-              height={220}
-              chartConfig={{
-                ...chartConfig,
-                color: (opacity = 1) =>
-                  theme === 'dark'
-                    ? `rgba(255, 255, 255, ${opacity})`
-                    : `rgba(0, 0, 0, ${opacity})`,
-                labelColor: (opacity = 1) =>
-                  theme === 'dark'
-                    ? `rgba(255, 255, 255, ${opacity})`
-                    : `rgba(0, 0, 0, ${opacity})`,
-              }}
-              bezier
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-            />
+            <View style={{ alignItems: 'center' }}>
+              <LineChart
+                data={lineChartData}
+                width={screenWidth - 80}
+                height={220}
+                chartConfig={{
+                  ...chartConfig,
+                  color: (opacity = 1) =>
+                    theme === 'dark'
+                      ? `rgba(255, 255, 255, ${opacity})`
+                      : `rgba(0, 0, 0, ${opacity})`,
+                  labelColor: (opacity = 1) =>
+                    theme === 'dark'
+                      ? `rgba(255, 255, 255, ${opacity})`
+                      : `rgba(0, 0, 0, ${opacity})`,
+                }}
+                bezier
+                style={{
+                  marginVertical: 8,
+                  borderRadius: 16,
+                }}
+              />
+            </View>
           </View>
         )}
 
@@ -442,18 +444,20 @@ export default function Reports() {
             <Text style={dynamicStyles.sectionTitle}>
               {language === 'ar' ? 'المصروفات حسب الفئة' : 'Expenses by Category'}
             </Text>
-            <PieChart
-              data={pieChartData}
-              width={screenWidth - 80}
-              height={220}
-              chartConfig={chartConfig}
-              accessor="value"
-              backgroundColor="transparent"
-              paddingLeft="15"
-              style={{
-                marginVertical: 8,
-              }}
-            />
+            <View style={{ alignItems: 'center' }}>
+              <PieChart
+                data={pieChartData}
+                width={screenWidth - 80}
+                height={220}
+                chartConfig={chartConfig}
+                accessor="value"
+                backgroundColor="transparent"
+                paddingLeft="15"
+                style={{
+                  marginVertical: 8,
+                }}
+              />
+            </View>
           </View>
         )}
 
@@ -463,29 +467,31 @@ export default function Reports() {
             <Text style={dynamicStyles.sectionTitle}>
               {language === 'ar' ? 'المقارنة الشهرية' : 'Monthly Comparison'}
             </Text>
-            <BarChart
-              data={barChartData}
-              width={screenWidth - 80}
-              height={220}
-              chartConfig={{
-                ...chartConfig,
-                color: (opacity = 1) =>
-                  theme === 'dark'
-                    ? `rgba(255, 255, 255, ${opacity})`
-                    : `rgba(0, 0, 0, ${opacity})`,
-                labelColor: (opacity = 1) =>
-                  theme === 'dark'
-                    ? `rgba(255, 255, 255, ${opacity})`
-                    : `rgba(0, 0, 0, ${opacity})`,
-              }}
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-              yAxisLabel=""
-              yAxisSuffix=""
-              showValuesOnTopOfBars
-            />
+            <View style={{ alignItems: 'center' }}>
+              <BarChart
+                data={barChartData}
+                width={screenWidth - 80}
+                height={220}
+                chartConfig={{
+                  ...chartConfig,
+                  color: (opacity = 1) =>
+                    theme === 'dark'
+                      ? `rgba(255, 255, 255, ${opacity})`
+                      : `rgba(0, 0, 0, ${opacity})`,
+                  labelColor: (opacity = 1) =>
+                    theme === 'dark'
+                      ? `rgba(255, 255, 255, ${opacity})`
+                      : `rgba(0, 0, 0, ${opacity})`,
+                }}
+                style={{
+                  marginVertical: 8,
+                  borderRadius: 16,
+                }}
+                yAxisLabel=""
+                yAxisSuffix=""
+                showValuesOnTopOfBars
+              />
+            </View>
           </View>
         )}
       </ScrollView>

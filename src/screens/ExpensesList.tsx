@@ -19,6 +19,7 @@ import { useTheme } from '../context/ThemeContext';
 import { Transaction, ExpenseCategory, IncomeCategory, CURRENCIES } from '../types/expense';
 import { useVoiceRecognition } from '../hooks/useVoiceRecognition';
 import { parseVoiceText } from '../utils/voiceParser';
+import { FEATURE_FLAGS } from '../config/featureFlags';
 
 // الألوان ستكون من الثيم - سيتم تمريرها كدالة
 const getCategoryColor = (theme: 'light' | 'dark'): string => {
@@ -92,9 +93,20 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
         </Text>
         <View style={styles.transactionFooter}>
           <Text style={[styles.transactionCategory, { color: colors.textSecondary }]}>{transaction.category}</Text>
-          <Text style={[styles.transactionAmount, { color: colors.text }]}>
-            {formatAmount(transaction.amount, transaction.currency)}
-          </Text>
+          <View style={styles.amountContainer}>
+            <Icon
+              name={transaction.type === 'income' ? 'arrow-up' : 'arrow-down'}
+              size={16}
+              color={transaction.type === 'income' ? '#10B981' : '#EF4444'}
+              style={styles.amountIcon}
+            />
+            <Text style={[
+              styles.transactionAmount,
+              { color: transaction.type === 'income' ? '#10B981' : '#EF4444' }
+            ]}>
+              {formatAmount(transaction.amount, transaction.currency)}
+            </Text>
+          </View>
         </View>
         <Text style={[styles.transactionDate, { color: colors.textSecondary }]}>{formatDate(transaction.date)}</Text>
       </View>
@@ -113,7 +125,9 @@ export default function ExpensesList() {
   const [showCurrencyModal, setShowCurrencyModal] = useState(false);
   const [showVoiceModal, setShowVoiceModal] = useState(false);
   
-  const { text: voiceText, isListening, error: voiceError, startListening, stopListening, cancelListening } = useVoiceRecognition();
+  const { text: voiceText, isListening, error: voiceError, startListening, stopListening, cancelListening } = FEATURE_FLAGS.VOICE_RECOGNITION 
+    ? useVoiceRecognition() 
+    : { text: '', isListening: false, error: null, startListening: async () => {}, stopListening: async () => {}, cancelListening: async () => {} };
 
   // Get month name
   const getMonthName = (monthIndex: number) => {
@@ -121,14 +135,13 @@ export default function ExpensesList() {
     return date.toLocaleDateString('en-US', { month: 'short' });
   };
 
-  // Get all unique categories from monthly transactions
+  // Get all unique categories from monthly transactions (both expenses and income)
   const availableCategories = useMemo(() => {
     const categories = new Set<string>();
     transactions.forEach((t) => {
       if (
         new Date(t.date).getMonth() === selectedMonth &&
-        new Date(t.date).getFullYear() === selectedYear &&
-        t.type === 'expense'
+        new Date(t.date).getFullYear() === selectedYear
       ) {
         categories.add(t.category);
       }
@@ -142,17 +155,16 @@ export default function ExpensesList() {
       const transactionDate = new Date(t.date);
       const matchesMonth =
         transactionDate.getMonth() === selectedMonth &&
-        transactionDate.getFullYear() === selectedYear &&
-        t.type === 'expense';
+        transactionDate.getFullYear() === selectedYear;
       
       if (!matchesMonth) return false;
       
-      // Apply category filter if selected
+      // Apply category filter if selected (for both expenses and income)
       if (selectedCategory) {
         return t.category === selectedCategory;
       }
       
-      return true;
+      return true; // Show both expenses and income
     });
   }, [transactions, selectedMonth, selectedYear, selectedCategory]);
 
@@ -347,6 +359,7 @@ export default function ExpensesList() {
       fontWeight: '700',
       color: colors.text,
       marginBottom: 16,
+      flex: 1,
       paddingHorizontal: 20,
     },
   });
@@ -368,11 +381,13 @@ export default function ExpensesList() {
             </Text>
             <Icon name="chevron-down" size={16} color={colors.text} />
           </TouchableOpacity>
-          <View style={dynamicStyles.freeTag}>
-            <Text style={dynamicStyles.freeTagText}>FREE</Text>
-            <Text style={dynamicStyles.freeTagText}>10/15</Text>
-            <Icon name="mic" size={16} color={colors.text} />
-          </View>
+          {FEATURE_FLAGS.VOICE_RECOGNITION && (
+            <View style={dynamicStyles.freeTag}>
+              <Text style={dynamicStyles.freeTagText}>FREE</Text>
+              <Text style={dynamicStyles.freeTagText}>10/15</Text>
+              <Icon name="mic" size={16} color={colors.text} />
+            </View>
+          )}
           <TouchableOpacity onPress={() => navigation.navigate('Settings' as never)}>
             <Icon name="settings-outline" size={24} color={colors.text} />
           </TouchableOpacity>
@@ -446,22 +461,34 @@ export default function ExpensesList() {
             <Text style={[dynamicStyles.monthSelectorTitle, { marginLeft: 8 }]}>
               {language === 'ar' ? 'الفئات' : 'Categories'}
             </Text>
-            {selectedCategory && (
-              <TouchableOpacity
-                onPress={() => setSelectedCategory(null)}
-                style={styles.clearCategoryButton}
-              >
-                <Text style={[styles.clearCategoryText, { color: colors.textSecondary }]}>
-                  {language === 'ar' ? 'إزالة' : 'Clear'}
-                </Text>
-              </TouchableOpacity>
-            )}
           </View>
           <ScrollView 
             horizontal 
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.categoriesScroll}
           >
+            {/* All Categories Button */}
+            <TouchableOpacity
+              style={[
+                styles.categoryButton,
+                {
+                  backgroundColor: !selectedCategory ? colors.primary : colors.background,
+                },
+              ]}
+              onPress={() => setSelectedCategory(null)}
+            >
+              <Text
+                style={[
+                  styles.categoryButtonText,
+                  {
+                    color: !selectedCategory ? (theme === 'light' ? '#FFFFFF' : '#000000') : colors.textSecondary,
+                    fontWeight: !selectedCategory ? '700' : '600',
+                  },
+                ]}
+              >
+                {language === 'ar' ? 'الكل' : 'All'}
+              </Text>
+            </TouchableOpacity>
             {availableCategories.map((category) => {
               const isSelected = selectedCategory === category;
               return (
@@ -495,10 +522,19 @@ export default function ExpensesList() {
         </View>
       )}
 
-      {/* Recent Expenses Title */}
-      <Text style={dynamicStyles.recentExpensesTitle}>
-        {language === 'ar' ? 'المصروفات الأخيرة' : 'Recent Expenses'}
-      </Text>
+      {/* Recent Expenses Title with Add Button */}
+      <View style={styles.recentExpensesHeader}>
+        <Text style={dynamicStyles.recentExpensesTitle}>
+          {language === 'ar' ? 'المصروفات الأخيرة' : 'Recent Expenses'}
+        </Text>
+        <TouchableOpacity
+          style={[styles.addButton, { backgroundColor: colors.primary }]}
+          onPress={() => (navigation as any).navigate('AddExpense')}
+          activeOpacity={0.7}
+        >
+          <Icon name="add" size={24} color="#FFFFFF" />
+        </TouchableOpacity>
+      </View>
 
       {/* Transactions List */}
       <FlatList
@@ -516,33 +552,35 @@ export default function ExpensesList() {
         }
       />
 
-      {/* FAB */}
-      <TouchableOpacity
-        style={[
-          styles.fab, 
-          { 
-            backgroundColor: isListening ? colors.error : colors.primary,
-            transform: [{ scale: isListening ? 1.1 : 1 }],
-          }
-        ]}
-        onPress={handleVoicePress}
-        onLongPress={() => navigation.navigate('AddExpense' as never)}
-        activeOpacity={0.8}
-      >
-        {isListening ? (
-          <ActivityIndicator size="small" color={theme === 'light' ? '#FFFFFF' : '#000000'} />
-        ) : (
-          <Icon name="mic" size={28} color={theme === 'light' ? '#FFFFFF' : '#000000'} />
-        )}
-      </TouchableOpacity>
+      {/* FAB - Only show if voice recognition is enabled */}
+      {FEATURE_FLAGS.VOICE_RECOGNITION && (
+        <>
+          <TouchableOpacity
+            style={[
+              styles.fab, 
+              { 
+                backgroundColor: isListening ? colors.error : colors.primary,
+                transform: [{ scale: isListening ? 1.1 : 1 }],
+              }
+            ]}
+            onPress={handleVoicePress}
+            onLongPress={() => navigation.navigate('AddExpense' as never)}
+            activeOpacity={0.8}
+          >
+            {isListening ? (
+              <ActivityIndicator size="small" color={theme === 'light' ? '#FFFFFF' : '#000000'} />
+            ) : (
+              <Icon name="mic" size={28} color={theme === 'light' ? '#FFFFFF' : '#000000'} />
+            )}
+          </TouchableOpacity>
 
-      {/* Voice Recognition Modal */}
-      <Modal
-        visible={showVoiceModal}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={handleVoiceCancel}
-      >
+          {/* Voice Recognition Modal */}
+          <Modal
+            visible={showVoiceModal}
+            transparent={true}
+            animationType="slide"
+            onRequestClose={handleVoiceCancel}
+          >
         <View style={styles.voiceModalOverlay}>
           <View style={[styles.voiceModalContent, { backgroundColor: colors.card }]}>
             <View style={styles.voiceModalHeader}>
@@ -627,6 +665,8 @@ export default function ExpensesList() {
           </View>
         </View>
       </Modal>
+        </>
+      )}
 
       {/* Currency Modal */}
       <Modal
@@ -706,6 +746,28 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 12,
   },
+  recentExpensesHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginBottom: 16,
+  },
+  addButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
   clearCategoryButton: {
     paddingHorizontal: 8,
     paddingVertical: 4,
@@ -771,6 +833,14 @@ const styles = StyleSheet.create({
   transactionCategory: {
     fontSize: 13,
     fontWeight: '500',
+  },
+  amountContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  amountIcon: {
+    marginRight: 2,
   },
   transactionAmount: {
     fontSize: 16,
