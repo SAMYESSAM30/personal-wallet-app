@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -29,6 +30,14 @@ export default function Settings() {
     setCurrency,
     formatAmount,
     exportToEmail,
+    monthlyResetEnabled,
+    setMonthlyResetEnabled,
+    syncEnabled,
+    syncStatus,
+    enableSync,
+    disableSync,
+    syncNow,
+    shareData,
   } = useExpenses();
 
   const handleClearAll = () => {
@@ -199,6 +208,8 @@ export default function Settings() {
       shadowOpacity: 0.1,
       shadowRadius: 3.84,
       elevation: 3,
+      flexDirection: 'row',
+      justifyContent: 'center',
     },
     actionButtonText: {
       color: '#FFFFFF',
@@ -368,10 +379,237 @@ export default function Settings() {
         </View>
 
         <View style={styles.section}>
-          <Text style={dynamicStyles.sectionTitle}>{t('settings.actions')}</Text>
-          <TouchableOpacity style={dynamicStyles.actionButton} onPress={handleExport}>
+          <Text style={dynamicStyles.sectionTitle}>{language === 'ar' ? 'الإعدادات المتقدمة' : 'Advanced Settings'}</Text>
+          <View style={dynamicStyles.currencyCard}>
+            <TouchableOpacity
+              style={[
+                dynamicStyles.menuItem,
+                { marginBottom: 0, backgroundColor: 'transparent', shadowOpacity: 0, elevation: 0 }
+              ]}
+              onPress={() => {
+                if (!monthlyResetEnabled) {
+                  Alert.alert(
+                    t('settings.monthlyReset'),
+                    t('settings.monthlyResetConfirm'),
+                    [
+                      { text: t('common.cancel'), style: 'cancel' },
+                      {
+                        text: t('common.save'),
+                        onPress: () => setMonthlyResetEnabled(true),
+                      },
+                    ]
+                  );
+                } else {
+                  setMonthlyResetEnabled(false);
+                }
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                <Text style={dynamicStyles.menuItemText}>{t('settings.monthlyReset')}</Text>
+                <Text style={[dynamicStyles.statLabel, { fontSize: 12, marginTop: 4 }]}>
+                  {t('settings.monthlyResetDesc')}
+                </Text>
+              </View>
+              <View
+                style={[
+                  styles.toggle,
+                  {
+                    backgroundColor: monthlyResetEnabled ? colors.primary : colors.border,
+                  },
+                ]}
+              >
+                <View
+                  style={[
+                    styles.toggleThumb,
+                    {
+                      transform: [{ translateX: monthlyResetEnabled ? 20 : 0 }],
+                      backgroundColor: '#FFFFFF',
+                    },
+                  ]}
+                />
+              </View>
+            </TouchableOpacity>
+
+            {/* Sync Settings */}
+            <TouchableOpacity
+              style={[
+                dynamicStyles.menuItem,
+                { marginBottom: 0, backgroundColor: 'transparent', shadowOpacity: 0, elevation: 0 }
+              ]}
+              onPress={async () => {
+                if (!syncEnabled) {
+                  Alert.alert(
+                    t('settings.sync'),
+                    t('settings.syncConfirm'),
+                    [
+                      { text: t('common.cancel'), style: 'cancel' },
+                      {
+                        text: t('common.save'),
+                        onPress: async () => {
+                          try {
+                            await enableSync();
+                            Alert.alert(t('add.success'), t('settings.syncEnabled'));
+                          } catch (error: any) {
+                            Alert.alert(t('common.error'), error.message || t('settings.syncError'));
+                          }
+                        },
+                      },
+                    ]
+                  );
+                } else {
+                  Alert.alert(
+                    t('settings.sync'),
+                    t('settings.syncDisableConfirm'),
+                    [
+                      { text: t('common.cancel'), style: 'cancel' },
+                      {
+                        text: t('common.save'),
+                        onPress: async () => {
+                          try {
+                            await disableSync();
+                            Alert.alert(t('add.success'), t('settings.syncDisabled'));
+                          } catch (error: any) {
+                            Alert.alert(t('common.error'), error.message || t('settings.syncError'));
+                          }
+                        },
+                      },
+                    ]
+                  );
+                }
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                <Text style={dynamicStyles.menuItemText}>{t('settings.sync')}</Text>
+                <Text style={[dynamicStyles.statLabel, { fontSize: 12, marginTop: 4 }]}>
+                  {t('settings.syncDesc')}
+                </Text>
+                {syncStatus.lastSyncTime && (
+                  <Text style={[dynamicStyles.statLabel, { fontSize: 11, marginTop: 2, color: colors.textSecondary }]}>
+                    {language === 'ar' 
+                      ? `آخر مزامنة: ${syncStatus.lastSyncTime.toLocaleString('ar-SA')}`
+                      : `Last sync: ${syncStatus.lastSyncTime.toLocaleString('en-US')}`}
+                  </Text>
+                )}
+                {syncStatus.error && (
+                  <Text style={[dynamicStyles.statLabel, { fontSize: 11, marginTop: 2, color: colors.error }]}>
+                    {syncStatus.error}
+                  </Text>
+                )}
+              </View>
+              <View
+                style={[
+                  styles.toggle,
+                  {
+                    backgroundColor: syncEnabled ? colors.primary : colors.border,
+                  },
+                ]}
+              >
+                <View
+                  style={[
+                    styles.toggleThumb,
+                    {
+                      transform: [{ translateX: syncEnabled ? 20 : 0 }],
+                      backgroundColor: '#FFFFFF',
+                    },
+                  ]}
+                />
+              </View>
+            </TouchableOpacity>
+
+            {/* Sync Now Button */}
+            {syncEnabled && (
+              <TouchableOpacity
+                style={[
+                  dynamicStyles.actionButton,
+                  { marginTop: 12, backgroundColor: syncStatus.isSyncing ? colors.border : colors.primary }
+                ]}
+                onPress={async () => {
+                  try {
+                    await syncNow();
+                    Alert.alert(t('add.success'), t('settings.syncSuccess'));
+                  } catch (error: any) {
+                    Alert.alert(t('common.error'), error.message || t('settings.syncError'));
+                  }
+                }}
+                disabled={syncStatus.isSyncing}
+              >
+                {syncStatus.isSyncing ? (
+                  <ActivityIndicator size="small" color="#FFFFFF" />
+                ) : (
+                  <Text style={dynamicStyles.actionButtonText}>{t('settings.syncNow')}</Text>
+                )}
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={dynamicStyles.sectionTitle}>{t('settings.shareAndExport')}</Text>
+          <TouchableOpacity 
+            style={dynamicStyles.actionButton} 
+            onPress={handleExport}
+          >
+            <Icon name="mail-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
             <Text style={dynamicStyles.actionButtonText}>{t('settings.export')}</Text>
           </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={[dynamicStyles.actionButton, { backgroundColor: colors.success }]} 
+            onPress={async () => {
+              if (transactions.length === 0) {
+                Alert.alert(t('settings.noTransactionsExport'), t('settings.noTransactionsExport'));
+                return;
+              }
+              try {
+                await shareData('text', language);
+              } catch (error: any) {
+                Alert.alert(t('common.error'), error.message || t('settings.shareError'));
+              }
+            }}
+          >
+            <Icon name="share-social-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
+            <Text style={dynamicStyles.actionButtonText}>{t('settings.shareText')}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[dynamicStyles.actionButton, { backgroundColor: colors.primary }]} 
+            onPress={async () => {
+              if (transactions.length === 0) {
+                Alert.alert(t('settings.noTransactionsExport'), t('settings.noTransactionsExport'));
+                return;
+              }
+              try {
+                await shareData('csv', language);
+              } catch (error: any) {
+                Alert.alert(t('common.error'), error.message || t('settings.shareError'));
+              }
+            }}
+          >
+            <Icon name="document-text-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
+            <Text style={dynamicStyles.actionButtonText}>{t('settings.shareCSV')}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[dynamicStyles.actionButton, { backgroundColor: colors.primary }]} 
+            onPress={async () => {
+              if (transactions.length === 0) {
+                Alert.alert(t('settings.noTransactionsExport'), t('settings.noTransactionsExport'));
+                return;
+              }
+              try {
+                await shareData('json', language);
+              } catch (error: any) {
+                Alert.alert(t('common.error'), error.message || t('settings.shareError'));
+              }
+            }}
+          >
+            <Icon name="code-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
+            <Text style={dynamicStyles.actionButtonText}>{t('settings.shareJSON')}</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={dynamicStyles.sectionTitle}>{t('settings.actions')}</Text>
           <TouchableOpacity
             style={[dynamicStyles.actionButton, dynamicStyles.dangerButton]}
             onPress={handleClearAll}
@@ -427,5 +665,25 @@ const styles = StyleSheet.create({
     marginTop: 8,
     paddingTop: 16,
     borderTopWidth: 2,
+  },
+  toggle: {
+    width: 50,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: 'center',
+    paddingHorizontal: 2,
+  },
+  toggleThumb: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });
