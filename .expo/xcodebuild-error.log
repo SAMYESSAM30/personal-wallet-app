@@ -1,0 +1,23 @@
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, id:A2443F7F-8B3C-43A6-812D-128E2419B6C6, OS:17.5, name:iPhone 15 Plus }
+{ platform:iOS Simulator, id:A2443F7F-8B3C-43A6-812D-128E2419B6C6, OS:17.5, name:iPhone 15 Plus }
+** BUILD FAILED **
+
+
+The following build commands failed:
+	SwiftCompile normal arm64 Compiling\ ResponseState.swift /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/ResponseState.swift (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/ResponseState.swift (in target 'Expo' from project 'Pods')
+	EmitSwiftModule normal arm64 (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 Compiling\ NativeResponseInit.swift /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/NativeResponseInit.swift (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/NativeResponseInit.swift (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 Compiling\ AppDelegatesLoaderDelegate.swift,\ Expo.swift /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/AppDelegates/AppDelegatesLoaderDelegate.swift /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Expo.swift (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/AppDelegates/AppDelegatesLoaderDelegate.swift (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Expo.swift (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 Compiling\ NativeRequestCredentials.swift,\ NativeRequestInit.swift /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/NativeRequestCredentials.swift /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/NativeRequestInit.swift (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/NativeRequestCredentials.swift (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/NativeRequestInit.swift (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 Compiling\ FetchExceptions.swift,\ NativeRequest.swift /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/FetchExceptions.swift /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/NativeRequest.swift (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/FetchExceptions.swift (in target 'Expo' from project 'Pods')
+	SwiftCompile normal arm64 /Users/samystarways/Projects/cursor/mobile/MobileApp/node_modules/expo/ios/Fetch/NativeRequest.swift (in target 'Expo' from project 'Pods')
+	Building workspace MobileApp with scheme MobileApp and configuration Debug
+(15 failures)

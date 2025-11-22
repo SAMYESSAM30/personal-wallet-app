@@ -1,4 +1,33 @@
 {
-  "name": "MobileApp",
-  "displayName": "MobileApp"
+  "expo": {
+    "name": "MobileApp",
+    "slug": "mobile-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mobileapp",
+      "infoPlist": {
+        "NSSpeechRecognitionUsageDescription": "نحتاج إلى الوصول إلى التعرف على الكلام لإضافة المعاملات بالصوت",
+        "NSMicrophoneUsageDescription": "نحتاج إلى الوصول إلى الميكروفون لإضافة المعاملات بالصوت"
+      }
+    },
+    "android": {
+      "package": "com.mobileapp",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "plugins": [
+      "@react-native-voice/voice"
+    ]
+  }
 }

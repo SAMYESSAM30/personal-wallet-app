@@ -1,97 +1,218 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Personal Wallet App 💰
 
-# Getting Started
+A modern, feature-rich personal expense management mobile application built with React Native and Expo. Track your expenses, manage categories, generate reports, and analyze your spending patterns with an intuitive and beautiful interface.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## ✨ Features
 
-## Step 1: Start Metro
+- 📝 **Expense Management**: Add, edit, and delete expenses with ease
+- 🎤 **Voice Recognition**: Add expenses using voice commands (powered by React Native Voice)
+- 📊 **Reports & Analytics**: Visualize your spending with interactive charts and statistics
+- 🏷️ **Category Management**: Organize expenses with customizable categories
+- 🌍 **Multi-language Support**: Available in multiple languages
+- 🌓 **Dark/Light Theme**: Beautiful UI with theme switching support
+- 💾 **Local Storage**: All data stored locally using AsyncStorage
+- 📱 **Cross-platform**: Works on both iOS and Android
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 🛠️ Tech Stack
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- **React Native** 0.82.1
+- **Expo** 54.0.25
+- **TypeScript**
+- **React Navigation** (Bottom Tabs & Stack Navigation)
+- **React Native Voice** (Voice recognition)
+- **React Native Chart Kit** (Charts and visualizations)
+- **AsyncStorage** (Local data persistence)
+- **React Native Vector Icons** (Icon library)
 
-```sh
-# Using npm
-npm start
+## 📋 Prerequisites
 
-# OR using Yarn
-yarn start
+Before you begin, ensure you have the following installed:
+
+- **Node.js** >= 20
+- **npm** or **yarn**
+- **React Native development environment** set up
+  - For iOS: Xcode (macOS only)
+  - For Android: Android Studio
+- **Expo CLI** (optional, for Expo workflow)
+
+## 🚀 Getting Started
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/SAMYESSAM30/personal-wallet-app.git
+cd personal-wallet-app/MobileApp
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+2. Install dependencies:
+```bash
+npm install
 ```
 
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+3. Install iOS dependencies (macOS only):
+```bash
+cd ios
+pod install
+cd ..
 ```
 
-Then, and every time you update your native dependencies, run:
+### Running the App
 
-```sh
-bundle exec pod install
-```
+#### Using React Native CLI
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
+**iOS:**
+```bash
 npm run ios
-
-# OR using Yarn
-yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+**Android:**
+```bash
+npm run android
+```
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+#### Using Expo
 
-## Step 3: Modify your app
+**Start Expo development server:**
+```bash
+npm run expo
+```
 
-Now that you have successfully run the app, let's make changes!
+**Run on iOS:**
+```bash
+npm run expo:ios
+```
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+**Run on Android:**
+```bash
+npm run expo:android
+```
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+> **Note**: This project uses native modules (voice recognition, vector icons) that require **Expo Development Build**. Regular Expo Go may not support all features.
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## 📱 Development Build Setup
 
-## Congratulations! :tada:
+Since this app uses native modules, you'll need to create a development build:
 
-You've successfully run and modified your React Native App. :partying_face:
+### iOS Development Build
 
-### Now what?
+```bash
+npx expo run:ios
+```
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+### Android Development Build
 
-# Troubleshooting
+```bash
+npx expo run:android
+```
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## 🏗️ Project Structure
 
-# Learn More
+```
+MobileApp/
+├── src/
+│   ├── components/       # Reusable UI components
+│   ├── context/          # React Context providers
+│   │   ├── ExpenseContext.tsx
+│   │   ├── LanguageContext.tsx
+│   │   └── ThemeContext.tsx
+│   ├── hooks/            # Custom React hooks
+│   │   └── useVoiceRecognition.ts
+│   ├── screens/          # Screen components
+│   │   ├── AddExpense.tsx
+│   │   ├── ExpensesList.tsx
+│   │   ├── Reports.tsx
+│   │   ├── Settings.tsx
+│   │   └── ...
+│   ├── types/           # TypeScript type definitions
+│   │   └── expense.ts
+│   └── utils/           # Utility functions
+│       └── voiceParser.ts
+├── ios/                  # iOS native code
+├── android/              # Android native code
+├── App.tsx              # Main app component
+└── package.json         # Dependencies
+```
 
-To learn more about React Native, take a look at the following resources:
+## 🎨 Features in Detail
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+### Expense Management
+- Add expenses with amount, category, date, and notes
+- Edit and delete existing expenses
+- Filter and search expenses
+- Sort by date, amount, or category
+
+### Voice Recognition
+- Add expenses using natural language voice commands
+- Supports multiple languages
+- Automatic parsing of voice input
+
+### Reports & Analytics
+- Monthly and yearly expense summaries
+- Category-wise spending breakdown
+- Interactive charts and graphs
+- Export capabilities
+
+### Category Management
+- Create custom expense categories
+- Edit and delete categories
+- Category icons and colors
+- Default categories included
+
+### Settings
+- Language selection
+- Theme switching (Light/Dark)
+- Privacy policy
+- About page
+- FAQ section
+
+## 🧪 Testing
+
+Run tests:
+```bash
+npm test
+```
+
+## 📝 Scripts
+
+- `npm start` - Start Metro bundler
+- `npm run ios` - Run on iOS simulator
+- `npm run android` - Run on Android emulator
+- `npm run expo` - Start Expo development server
+- `npm run lint` - Run ESLint
+- `npm test` - Run Jest tests
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**iOS Build Errors:**
+- Make sure CocoaPods dependencies are installed: `cd ios && pod install`
+- Clean build folder: `cd ios && rm -rf build && pod install`
+
+**Metro Bundler Issues:**
+- Clear cache: `npm start -- --reset-cache`
+- Clear watchman: `watchman watch-del-all`
+
+**Version Mismatch Errors:**
+- Ensure React and React Native versions are compatible
+- Delete `node_modules` and `package-lock.json`, then reinstall
+
+## 📄 License
+
+This project is private and proprietary.
+
+## 👤 Author
+
+**SAMYESSAM30**
+- GitHub: [@SAMYESSAM30](https://github.com/SAMYESSAM30)
+
+## 🙏 Acknowledgments
+
+- React Native community
+- Expo team
+- All open-source contributors
+
+---
+
+Made with ❤️ using React Native
